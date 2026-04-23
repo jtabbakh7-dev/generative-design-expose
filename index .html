@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Generative Design · From Prompt to Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<template id="__bundler_thumbnail" data-bg-color="#FAF7F2">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#FAF7F2"/>
+    <rect x="80" y="80" width="1040" height="640" fill="none" stroke="#CFC4B2" stroke-width="2"/>
+    <text x="120" y="200" font-family="Georgia, serif" font-size="110" fill="#1C1A17" font-style="italic">Generative</text>
+    <text x="120" y="320" font-family="Georgia, serif" font-size="110" fill="#1C1A17">Design</text>
+    <rect x="120" y="370" width="80" height="2" fill="#B8743A"/>
+    <text x="120" y="430" font-family="Georgia, serif" font-size="48" fill="#B8743A" font-style="italic">From Prompt to Product</text>
+    <text x="120" y="500" font-family="Arial, sans-serif" font-size="28" fill="#8A7B6A" letter-spacing="4">JOUDI TABBAKH · HOCHSCHULE ANHALT</text>
+  </svg>
+</template>
+<style>
+  :root{
+    --cream:#F4EFE8; --cream-2:#EDE6DB; --paper:#FAF7F2;
+    --ink:#1C1A17; --ink-soft:#3A352E;
+    --taupe:#8A7B6A; --taupe-soft:#B8AB99; --rule:#CFC4B2;
+    --ochre:#B8743A;
+    --serif:"Cormorant Garamond", Georgia, serif;
+    --sans:"Inter", -apple-system, Helvetica, sans-serif;
+  }
+  html,body{margin:0;padding:0;background:#0a0a0a;color:var(--ink);font-family:var(--sans);}
+  deck-stage{background:#0a0a0a;}
+  section{background:var(--cream);color:var(--ink);font-family:var(--sans);overflow:hidden;position:relative;}
+
+  .frame{position:absolute;inset:0;padding:100px 120px;box-sizing:border-box;display:flex;flex-direction:column;}
+  .meta{font-family:var(--sans);font-size:20px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--taupe);}
+  .rule{height:1px;background:var(--rule);width:100%;}
+  .rule-short{height:1px;background:var(--taupe);width:56px;}
+  .eyebrow{display:flex;align-items:center;gap:18px;}
+
+  h1.display{font-family:var(--serif);font-weight:400;font-size:132px;line-height:0.95;letter-spacing:-0.01em;margin:0;color:var(--ink);}
+  h1.display em{font-style:italic;font-weight:400;color:var(--ochre);}
+  h2.title{font-family:var(--serif);font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-0.01em;margin:0;color:var(--ink);}
+  h2.title em{font-style:italic;color:var(--ochre);font-weight:400;}
+  h3.subtitle{font-family:var(--serif);font-weight:400;font-size:44px;line-height:1.15;margin:0;color:var(--ink-soft);font-style:italic;}
+  .body{font-family:var(--sans);font-size:30px;line-height:1.45;color:var(--ink-soft);font-weight:300;}
+  .small{font-family:var(--sans);font-size:24px;line-height:1.5;color:var(--ink-soft);font-weight:300;}
+
+  .spacer{flex:1;}
+  .row{display:flex;}
+  .col{display:flex;flex-direction:column;}
+
+  .bg-ink{background:var(--ink);color:var(--cream);}
+  .bg-ink h2.title, .bg-ink h1.display, .bg-ink h3.subtitle{color:var(--cream);}
+  .bg-ink .body, .bg-ink .small{color:#D8CFBE;}
+  .bg-ink .meta{color:var(--taupe-soft);}
+  .bg-ink .rule, .bg-ink .rule-short{background:#58503F;}
+  .bg-paper{background:var(--paper);}
+
+  .foot{position:absolute;left:120px;right:120px;bottom:60px;display:flex;justify-content:space-between;align-items:center;font-family:var(--sans);font-size:18px;letter-spacing:0.16em;text-transform:uppercase;color:var(--taupe);font-weight:500;}
+  .bg-ink .foot{color:var(--taupe-soft);}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:64px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;}
+  .grid-22{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:28px;}
+
+  .card{background:var(--paper);border:1px solid var(--rule);padding:40px;display:flex;flex-direction:column;gap:18px;}
+  .card .num{font-family:var(--serif);font-style:italic;font-size:56px;color:var(--ochre);line-height:1;font-weight:400;}
+  .card h4{font-family:var(--serif);font-size:34px;font-weight:500;margin:0;line-height:1.15;color:var(--ink);}
+  .card p{font-family:var(--sans);font-size:22px;line-height:1.5;margin:0;color:var(--ink-soft);font-weight:300;}
+  .card .label{font-family:var(--sans);font-size:16px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ochre);font-weight:500;}
+  .bg-ink .card{background:#24211C;border-color:#3A352E;}
+  .bg-ink .card h4{color:var(--cream);}
+  .bg-ink .card p{color:#B8AB99;}
+
+  /* Workflow diagram */
+  .flow{display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;}
+  .flow .node{flex:1;display:flex;flex-direction:column;align-items:center;gap:22px;position:relative;z-index:2;}
+  .flow .circle{width:180px;height:180px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-size:64px;color:var(--ochre);}
+  .flow .title-sm{font-family:var(--serif);font-size:30px;font-weight:500;color:var(--ink);}
+  .flow .sub-sm{font-family:var(--sans);font-size:20px;color:var(--taupe);letter-spacing:0.04em;}
+  .flow .judgement{position:absolute;top:80px;left:10%;right:10%;border-top:1.5px dashed var(--ochre);z-index:1;}
+  .flow .judgement-label{position:absolute;top:64px;left:50%;transform:translateX(-50%);background:var(--cream);padding:0 20px;font-family:var(--serif);font-style:italic;font-size:24px;color:var(--ochre);z-index:3;letter-spacing:0.04em;}
+
+  /* Pull quote */
+  .pull{font-family:var(--serif);font-weight:400;font-size:76px;line-height:1.1;color:var(--ink);letter-spacing:-0.005em;}
+  .pull em{font-style:italic;color:var(--ochre);}
+  .bg-ink .pull{color:var(--cream);}
+
+  /* Stacked format row */
+  .fmt-row{display:grid;grid-template-columns:280px 1fr 300px;gap:40px;align-items:center;padding:36px 40px;border:1px solid var(--rule);background:var(--paper);}
+  .fmt-row .fmt-name{font-family:var(--serif);font-size:40px;font-weight:500;color:var(--ink);}
+  .fmt-row .fmt-desc{font-family:var(--sans);font-size:22px;color:var(--ink-soft);font-weight:300;line-height:1.5;}
+  .fmt-row .fmt-tag{font-family:var(--sans);font-size:18px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ochre);font-weight:500;text-align:right;}
+  .fmt-row.hl{border-color:var(--ochre);}
+
+  /* Stratification diagram */
+  .strat{display:flex;flex-direction:column;gap:14px;}
+  .strat .layer{padding:26px 32px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--rule);background:var(--paper);}
+  .strat .layer .name{font-family:var(--serif);font-size:34px;font-weight:500;color:var(--ink);}
+  .strat .layer .desc{font-family:var(--sans);font-size:20px;color:var(--ink-soft);font-weight:300;}
+  .strat .layer.top{border-color:var(--ochre);background:var(--cream);}
+  .strat .layer.top .name{color:var(--ochre);font-style:italic;}
+  .strat .divider{display:flex;align-items:center;gap:18px;padding:4px 32px;font-family:var(--sans);font-size:16px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ochre);font-weight:500;}
+  .strat .divider::before,.strat .divider::after{content:"";flex:1;border-top:1px dashed var(--ochre);}
+
+  /* Skill card */
+  .skill{border:1px solid var(--rule);background:var(--paper);padding:48px;display:flex;flex-direction:column;gap:18px;}
+  .skill .id{font-family:var(--serif);font-style:italic;font-size:48px;color:var(--ochre);line-height:1;}
+  .skill .name{font-family:var(--serif);font-size:44px;font-weight:500;color:var(--ink);line-height:1.1;}
+  .skill .type{font-family:var(--sans);font-size:16px;letter-spacing:0.18em;text-transform:uppercase;color:var(--taupe);font-weight:500;}
+  .skill .desc{font-family:var(--sans);font-size:22px;color:var(--ink-soft);font-weight:300;line-height:1.5;}
+  .skill .tag{font-family:var(--sans);font-size:14px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ochre);font-weight:500;border-top:1px solid var(--rule);padding-top:14px;margin-top:6px;}
+
+  /* Pipeline */
+  .pipe{display:grid;grid-template-columns:1fr 40px 1fr 40px 1fr 40px 1fr;align-items:stretch;gap:0;}
+  .pipe .step{border:1px solid var(--rule);background:var(--paper);padding:32px 28px;display:flex;flex-direction:column;gap:14px;}
+  .pipe .step .k{font-family:var(--sans);font-size:14px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ochre);font-weight:500;}
+  .pipe .step .n{font-family:var(--serif);font-size:30px;font-weight:500;color:var(--ink);line-height:1.15;}
+  .pipe .step .d{font-family:var(--sans);font-size:19px;color:var(--ink-soft);font-weight:300;line-height:1.5;}
+  .pipe .arrow{display:flex;align-items:center;justify-content:center;color:var(--ochre);font-family:var(--serif);font-style:italic;font-size:36px;}
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+<!-- 01 TITLE -->
+<section data-label="01 Title" class="bg-paper">
+  <div class="frame">
+    <div class="row" style="justify-content:space-between;align-items:flex-start;">
+      <div class="meta">Course Proposal / Hochschule Anhalt</div>
+      <div class="meta">&nbsp;</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="col" style="gap:36px;">
+      <div class="eyebrow"><span class="rule-short" style="background:var(--ochre);"></span><span class="meta" style="color:var(--ochre);">Generative Design</span></div>
+      <h1 class="display">Generative Design<br/><em>From Prompt to Product</em></h1>
+      <h3 class="subtitle" style="max-width:1300px;">Authorship, AI, and the new stratification of architectural practice.</h3>
+    </div>
+    <div class="spacer"></div>
+    <div class="rule"></div>
+    <div style="height:24px;"></div>
+    <div class="row" style="justify-content:space-between;align-items:flex-end;">
+      <div class="col" style="gap:6px;">
+        <div class="small" style="color:var(--ink);font-weight:500;font-size:28px;">Joudi Tabbakh</div>
+        <div class="small">Architect · Interior Architect · AI Driven Design</div>
+      </div>
+      <div class="meta">01 / 14</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 CORE THESIS -->
+<section data-label="02 Core Thesis" class="bg-ink">
+  <div class="frame" style="justify-content:center;">
+    <div class="eyebrow" style="position:absolute;top:100px;left:120px;"><span class="rule-short"></span><span class="meta">Core thesis</span></div>
+    <div class="col" style="gap:44px;max-width:1500px;">
+      <div class="pull">"AI does not replace architects."</div>
+      <div class="pull" style="color:var(--taupe-soft);">"It stratifies practice between those who <em>direct systems</em> and those who only <em>produce outputs</em>."</div>
+      <div class="rule" style="background:#58503F;margin:12px 0;"></div>
+      <div class="body" style="font-family:var(--serif);font-size:38px;font-style:italic;color:var(--ochre);max-width:1400px;">This course trains students to operate above the layer of output.</div>
+    </div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>02</span></div>
+  </div>
+</section>
+
+<!-- 03 WHY NOW -->
+<section data-label="03 Why Now">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Why now</span></div>
+    <div style="height:40px;"></div>
+    <h2 class="title">The gap is <em>already open</em>.</h2>
+    <div style="height:60px;"></div>
+    <div class="grid-3" style="flex-shrink:0;">
+      <div class="card">
+        <div class="num">01</div>
+        <h4>Students are already using AI.</h4>
+        <p>Silently, without structure, without critique. Without a framework, they absorb the tool's defaults as their own.</p>
+      </div>
+      <div class="card">
+        <div class="num">02</div>
+        <h4>Offices are hiring for it.</h4>
+        <p>"AI Test-User" is now a real job title. Goldbeck GmbH is one example among a growing list across Germany. I hold the role myself.</p>
+      </div>
+      <div class="card">
+        <div class="num">03</div>
+        <h4>Education has not caught up.</h4>
+        <p>No critical frameworks, no shared vocabulary, no assessment criteria. The tool has entered the studio faster than the curriculum.</p>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="rule"></div>
+    <div style="height:20px;"></div>
+    <div class="body" style="font-family:var(--serif);font-size:34px;font-style:italic;color:var(--ink);">Current education produces output users. Not system directors.</div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>03</span></div>
+  </div>
+</section>
+
+<!-- 04 WHY HERE -->
+<section data-label="04 Why Here" class="bg-paper">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Why Hochschule Anhalt</span></div>
+    <div style="height:40px;"></div>
+    <div class="grid-2" style="flex:1;gap:100px;align-items:center;">
+      <div class="col" style="gap:36px;">
+        <h2 class="title">The <em>right soil</em><br/>for systemic work.</h2>
+        <p class="body" style="max-width:640px;">Integrated Design at Anhalt was never single-discipline. It treats architecture, interior, communication and product as one field under different lights.</p>
+        <p class="body" style="max-width:640px;">That is exactly the disposition generative systems require.</p>
+      </div>
+      <div class="col" style="gap:22px;">
+        <div class="card" style="padding:32px 36px;gap:10px;">
+          <div class="label">Institutional fit</div>
+          <div style="font-family:var(--serif);font-size:30px;color:var(--ink);">Interdisciplinary by design.</div>
+          <p style="font-size:20px;">Integrated Design crosses architecture, interior, product, communication — the native register of AI workflows.</p>
+        </div>
+        <div class="card" style="padding:32px 36px;gap:10px;">
+          <div class="label">Legacy</div>
+          <div style="font-family:var(--serif);font-size:30px;color:var(--ink);">Bauhaus Dessau.</div>
+          <p style="font-size:20px;">A tradition of treating method itself as a design object. Systems over objects.</p>
+        </div>
+        <div class="card" style="padding:32px 36px;gap:10px;border-color:var(--ochre);">
+          <div class="label" style="color:var(--ochre);">Continuity</div>
+          <div style="font-family:var(--serif);font-size:30px;color:var(--ink);">Extending the method forward.</div>
+          <p style="font-size:20px;">This course extends Anhalt's methodology into AI systems as a next-generation material.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>04</span></div>
+  </div>
+</section>
+
+<!-- 05 INSTRUCTOR POSITION -->
+<section data-label="05 Instructor Position">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Instructor position</span></div>
+    <div style="height:40px;"></div>
+    <div class="grid-2" style="flex:1;gap:100px;">
+      <div class="col" style="gap:36px;justify-content:center;">
+        <h2 class="title">Joudi <em>Tabbakh</em></h2>
+        <div class="small" style="color:var(--ochre);letter-spacing:0.18em;text-transform:uppercase;font-weight:500;font-size:20px;">Embedded practitioner. Not theorist.</div>
+        <p class="body" style="max-width:640px;">Ten years of international architectural practice across Berlin, Dubai, Jeddah and South Tyrol.</p>
+        <p class="body" style="max-width:640px;font-family:var(--serif);font-style:italic;font-size:32px;color:var(--ink);">I teach what I use/learnt in practice.</p>
+      </div>
+      <div class="col" style="gap:20px;justify-content:center;">
+        <div class="card" style="padding:28px 32px;gap:8px;">
+          <div class="label">Education</div>
+          <div style="font-family:var(--serif);font-size:30px;color:var(--ink);">Bauhaus Dessau · Hochschule Anhalt, 2020</div>
+        </div>
+        <div class="card" style="padding:28px 32px;gap:8px;">
+          <div class="label">Certification</div>
+          <div style="font-family:var(--serif);font-size:30px;color:var(--ink);">IBM Prompt Engineering · Credly, 2024</div>
+        </div>
+        <div class="card" style="padding:28px 32px;gap:8px;">
+          <div class="label">Practice</div>
+          <div style="font-family:var(--serif);font-size:30px;color:var(--ink);">Architect · Interior Architect · AI-driven design</div>
+        </div>
+        <div class="card" style="padding:28px 32px;gap:8px;border-color:var(--ochre);">
+          <div class="label" style="color:var(--ochre);">Working languages</div>
+          <div style="font-family:var(--serif);font-size:30px;color:var(--ink);">English · Deutsch · Arabic</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>05</span></div>
+  </div>
+</section>
+
+<!-- 06 PROBLEM DEFINITION -->
+<section data-label="06 Problem Definition" class="bg-ink">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Problem definition</span></div>
+    <div style="height:40px;"></div>
+    <h2 class="title">What students <em>cannot</em> do<br/>with the tools they use.</h2>
+    <div style="height:64px;"></div>
+    <div class="grid-4" style="flex-shrink:0;">
+      <div class="card">
+        <div class="num">i.</div>
+        <h4>Visually convincing.<br/>Structurally weak.</h4>
+        <p>Outputs look finished, but fail when scrutinised for logic, construction or use.</p>
+      </div>
+      <div class="card">
+        <div class="num">ii.</div>
+        <h4>No control over variation.</h4>
+        <p>Regeneration replaces intention. Difference without direction is not design.</p>
+      </div>
+      <div class="card">
+        <div class="num">iii.</div>
+        <h4>No coherence across iterations.</h4>
+        <p>Each image exists alone. A project is a series of disconnected guesses.</p>
+      </div>
+      <div class="card" style="border-color:var(--ochre);">
+        <div class="num" style="color:var(--ochre);">iv.</div>
+        <h4>No architectural reasoning inside prompts.</h4>
+        <p>Prompts describe mood. They do not encode brief, program, material or tectonic logic.</p>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="rule" style="background:#58503F;"></div>
+    <div style="height:20px;"></div>
+    <div class="body" style="font-family:var(--serif);font-size:34px;font-style:italic;color:var(--cream);">AI is used without architectural logic.</div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>06</span></div>
+  </div>
+</section>
+
+<!-- 07 METHOD: DIRECTED ITERATION -->
+<section data-label="07 Method · Directed Iteration">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Method · Directed iteration</span></div>
+    <div style="height:40px;"></div>
+    <h2 class="title">Four stages. One <em>judgment</em>.</h2>
+    <div class="spacer"></div>
+    <div class="flow">
+      <div class="judgement" style="top:90px;"></div>
+      <div class="node"><div class="circle">01</div><div class="title-sm">Concept</div><div class="sub-sm">Brief → Prompt</div></div>
+      <div class="node"><div class="circle">02</div><div class="title-sm">Visualize</div><div class="sub-sm">Generation</div></div>
+      <div class="node"><div class="circle">03</div><div class="title-sm">Iterate</div><div class="sub-sm">Controlled variation</div></div>
+      <div class="node"><div class="circle" style="border-color:var(--ochre);">04</div><div class="title-sm">Deliver</div><div class="sub-sm">Decision → production</div></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="rule"></div>
+    <div style="height:20px;"></div>
+    <div class="body" style="font-family:var(--serif);font-size:34px;font-style:italic;color:var(--ink);">The value lies in the judgment between stages. Not in the stages themselves.</div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>07</span></div>
+  </div>
+</section>
+
+<!-- 08 PROMPT ENGINEERING SYSTEM -->
+<section data-label="08 Prompt Engineering System" class="bg-paper">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Prompt engineering system</span></div>
+    <div style="height:36px;"></div>
+    <h2 class="title">Prompting as <em>executable system</em>.</h2>
+    <div class="small" style="font-size:26px;margin-top:20px;max-width:1400px;">Structured language engineering. Variable-based design logic. A diagnostic tool for iteration.</div>
+    <div style="height:48px;"></div>
+    <div class="grid-2" style="flex-shrink:0;">
+      <div class="skill">
+        <div class="id">01</div>
+        <div class="type">Micro-prompt system</div>
+        <div class="name">Nanobanana for Architects</div>
+        <div class="desc">Controls material, light and atmosphere at the scene level. Generates controlled variation across a single space.</div>
+        <div class="tag">Claude Skill · deployed</div>
+      </div>
+      <div class="skill" style="border-color:var(--ochre);">
+        <div class="id" style="color:var(--ochre);">02</div>
+        <div class="type" style="color:var(--ochre);">Macro-prompt system</div>
+        <div class="name">Prompting for Full Projects</div>
+        <div class="desc">Maintains coherence across a full project. Translates briefs into structured prompt chains that hold from concept to delivery.</div>
+        <div class="tag">Claude Skill · deployed</div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="rule"></div>
+    <div style="height:20px;"></div>
+    <div class="body" style="font-family:var(--serif);font-size:30px;font-style:italic;color:var(--ink);">Students interact with executable systems. Not static knowledge.</div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>08</span></div>
+  </div>
+</section>
+
+<!-- 09 CASE STUDY: ITERATION -->
+<section data-label="09 Case · Iteration" class="bg-ink">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Case study · Iteration</span></div>
+    <div style="height:36px;"></div>
+    <h2 class="title">Same spatial base.<br/>Five <em>outcomes</em>.</h2>
+    <div style="height:48px;"></div>
+    <div style="position:relative;aspect-ratio:16/5;width:100%;flex-shrink:0;">
+      <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#1C1A17;" poster="">
+        <source src="dessau-iterations.mp4?v=2" type="video/mp4">
+      </video>
+      <div style="position:absolute;inset:0;border:1px solid #58503F;pointer-events:none;"></div>
+      <div style="position:absolute;left:32px;bottom:28px;">
+        <div style="font-family:var(--serif);font-style:italic;font-size:30px;color:var(--ochre);">Minimal · Warm · Industrial · Organic · Editorial</div>
+      </div>
+      <div style="position:absolute;right:32px;top:28px;font-family:var(--sans);font-size:16px;letter-spacing:0.18em;text-transform:uppercase;color:var(--taupe-soft);font-weight:500;">Apartment · jt-studio.de</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="rule" style="background:#58503F;"></div>
+    <div style="height:20px;"></div>
+    <div class="body" style="font-family:var(--serif);font-size:32px;font-style:italic;color:var(--cream);">Design becomes selection within controlled systems. Clients decide instead of imagine.</div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>09</span></div>
+  </div>
+</section>
+
+<!-- 10 CASE STUDY: SYSTEM FAILURE -->
+<section data-label="10 Case · System Failure">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Case study · System failure + constraint</span></div>
+    <div style="height:36px;"></div>
+    <h2 class="title">Without <em>intent</em>,<br/>the system hallucinates.</h2>
+    <div style="height:48px;"></div>
+    <div class="grid-3" style="flex-shrink:0;">
+      <div class="card" style="padding:36px;gap:16px;">
+        <div class="label">Input</div>
+        <h4 style="font-size:30px;">Empty plan.</h4>
+        <p>Walls and doors only. No program, no circulation logic, no hierarchy.</p>
+      </div>
+      <div class="card" style="padding:36px;gap:16px;">
+        <div class="label">Result</div>
+        <h4 style="font-size:30px;">Spatial hallucination.</h4>
+        <p>The model invents organisation. Inconsistent circulation. Functions mis-assigned. Coherence collapses.</p>
+      </div>
+      <div class="card" style="padding:36px;gap:16px;border-color:var(--ochre);">
+        <div class="label" style="color:var(--ochre);">Intervention</div>
+        <h4 style="font-size:30px;">Architectural structuring.</h4>
+        <p>Manual layout introduced: program, zones, thresholds. The system becomes functional only after architectural authorship.</p>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="rule"></div>
+    <div style="height:20px;"></div>
+    <div class="body" style="font-family:var(--serif);font-size:32px;font-style:italic;color:var(--ink);">AI cannot operate without architectural intent. Intent is the constraint that makes the system work.</div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>10</span></div>
+  </div>
+</section>
+
+<!-- 11 FROM USER TO BUILDER -->
+<section data-label="11 From User to Builder" class="bg-ink">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">From user to builder</span></div>
+    <div style="height:36px;"></div>
+    <h2 class="title">Architects can now <em>build</em><br/>the systems that build.</h2>
+    <div style="height:32px;"></div>
+    <div class="card" style="padding:28px 36px;gap:10px;border-color:var(--ochre);background:#24211C;flex-shrink:0;">
+      <div class="label" style="color:var(--ochre);">Proof of concept</div>
+      <div style="font-family:var(--serif);font-size:30px;color:var(--cream);">jt-studio.de — built with Claude AI. No prior coding experience.</div>
+    </div>
+    <div style="height:32px;"></div>
+    <div class="pipe" style="flex-shrink:0;">
+      <div class="step"><div class="k">Orchestration</div><div class="n">Claude Code</div><div class="d">Directs the pipeline. Holds intent across tools.</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="k">API Layer</div><div class="n">Google Gemini</div><div class="d">Connected via API. Executes generation calls at scale.</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="k">Prompt System</div><div class="n">Nanobanana</div><div class="d">Structured micro-prompts. Material, light, atmosphere.</div></div>
+      <div class="arrow">→</div>
+      <div class="step" style="border-color:var(--ochre);"><div class="k" style="color:var(--ochre);">Output</div><div class="n">Architectural imagery</div><div class="d">Automated, scalable, coherent. Approx. $0.13 per image.</div></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="rule" style="background:#58503F;"></div>
+    <div style="height:20px;"></div>
+    <div class="body" style="font-family:var(--serif);font-size:32px;font-style:italic;color:var(--cream);">Architects design the systems that generate architectural outputs. Not only the outputs.</div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>11</span></div>
+  </div>
+</section>
+
+<!-- 12 COURSE STRUCTURE -->
+<section data-label="12 Course Structure" class="bg-paper">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Course structure</span></div>
+    <div style="height:36px;"></div>
+    <h2 class="title">Three modules.<br/>Three <em>formats</em>.</h2>
+    <div style="height:48px;"></div>
+    <div class="grid-3" style="flex-shrink:0;">
+      <div class="card" style="padding:40px;gap:18px;">
+        <div class="num">A.</div>
+        <div class="label">Practice</div>
+        <h4 style="font-size:34px;">Real project workflows.</h4>
+        <p>Iterative design with AI systems, applied to running client-grade briefs.</p>
+      </div>
+      <div class="card" style="padding:40px;gap:18px;">
+        <div class="num">B.</div>
+        <div class="label">Systems</div>
+        <h4 style="font-size:34px;">Prompt engineering &amp; tool integration.</h4>
+        <p>Workflows, custom Claude Skills, integration with Revit, Enscape, Blender.</p>
+      </div>
+      <div class="card" style="padding:40px;gap:18px;border-color:var(--ochre);">
+        <div class="num" style="color:var(--ochre);">C.</div>
+        <div class="label" style="color:var(--ochre);">Reflection</div>
+        <h4 style="font-size:34px;">"Where does authorship relocate when generation is automated?"</h4>
+        <p>Ethics, limits, authorship. The boundary of automation. Who signs the drawing.</p>
+      </div>
+    </div>
+    <div style="height:36px;"></div>
+    <div class="col" style="gap:14px;flex-shrink:0;">
+      <div class="fmt-row" style="padding:24px 36px;">
+        <div class="fmt-name" style="font-size:32px;">Semester seminar</div>
+        <div class="fmt-desc">Full depth, twelve to fourteen weekly sessions, running studio project throughout.</div>
+        <div class="fmt-tag">Full depth</div>
+      </div>
+      <div class="fmt-row" style="padding:24px 36px;">
+        <div class="fmt-name" style="font-size:32px;">Block intensive</div>
+        <div class="fmt-desc">One to two weeks, compressed and project-based. Ideal for a Projektwoche.</div>
+        <div class="fmt-tag">Compressed</div>
+      </div>
+      <div class="fmt-row" style="padding:24px 36px;">
+        <div class="fmt-name" style="font-size:32px;">Masterclass</div>
+        <div class="fmt-desc">One to two days, guest-lecture format, single-module focus.</div>
+        <div class="fmt-tag">Single module</div>
+      </div>
+    </div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>12</span></div>
+  </div>
+</section>
+
+<!-- 13 DELIVERABLES -->
+<section data-label="13 Deliverables" class="bg-ink">
+  <div class="frame">
+    <div class="eyebrow"><span class="rule-short"></span><span class="meta">Deliverables</span></div>
+    <div style="height:36px;"></div>
+    <h2 class="title">Students leave with<br/><em>systems</em>, not outputs.</h2>
+    <div style="height:60px;"></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:20px;flex-shrink:0;">
+      <div class="card" style="padding:32px;gap:14px;">
+        <div class="num">i.</div>
+        <h4 style="font-size:26px;">Personal prompt library</h4>
+        <p style="font-size:18px;">Versioned, documented, carried into first employment as a private tool.</p>
+      </div>
+      <div class="card" style="padding:32px;gap:14px;">
+        <div class="num">ii.</div>
+        <h4 style="font-size:26px;">Iterative design project</h4>
+        <p style="font-size:18px;">Fully developed from brief to final. Defended as a selection, not an output.</p>
+      </div>
+      <div class="card" style="padding:32px;gap:14px;">
+        <div class="num">iii.</div>
+        <h4 style="font-size:26px;">Portfolio fragment</h4>
+        <p style="font-size:18px;">Published as PDF or live web page. Something a client or hirer can be shown.</p>
+      </div>
+      <div class="card" style="padding:32px;gap:14px;">
+        <div class="num">iv.</div>
+        <h4 style="font-size:26px;">Custom Claude Skill</h4>
+        <p style="font-size:18px;">A functional AI tool, built for a studio task the student defined themselves.</p>
+      </div>
+      <div class="card" style="padding:32px;gap:14px;">
+        <div class="num">v.</div>
+        <h4 style="font-size:26px;">Authored position</h4>
+        <p style="font-size:18px;">Written or presented. What they will, and will not, automate.</p>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="rule" style="background:#58503F;"></div>
+    <div style="height:20px;"></div>
+    <div class="body" style="font-family:var(--serif);font-size:34px;font-style:italic;color:var(--cream);">Students do not leave with outputs. They leave with systems of authorship.</div>
+    <div class="foot"><span>Generative Design · From Prompt to Product</span><span>13</span></div>
+  </div>
+</section>
+
+<!-- 14 THANK YOU -->
+<section data-label="14 Thank You" class="bg-paper">
+  <style>
+    @keyframes ty-slide-in {
+      0%   { transform: translateX(-120%) rotate(-4deg) scale(0.9); opacity:0; }
+      60%  { transform: translateX(4%) rotate(1deg) scale(1.02); opacity:1; }
+      75%  { transform: translateX(-1%) rotate(-0.5deg) scale(1); }
+      100% { transform: translateX(0) rotate(0deg) scale(1); opacity:1; }
+    }
+    @keyframes ty-bounce-idle {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      30%     { transform: translateY(-12px) rotate(1deg); }
+      60%     { transform: translateY(-5px) rotate(-0.5deg); }
+    }
+    @keyframes ty-wave {
+      0%,45%   { transform: rotate(0deg); }
+      50%,56%,62%,68%,74%,80% { transform: rotate(-18deg); }
+      53%,59%,65%,71%,77%     { transform: rotate(18deg); }
+      90%,100% { transform: rotate(0deg); }
+    }
+    @keyframes ty-bubble-pop {
+      0%,45%  { opacity:0; transform: scale(0) translateY(10px); }
+      52%     { opacity:1; transform: scale(1.18) translateY(-4px); }
+      58%,100%{ opacity:1; transform: scale(1) translateY(0); }
+    }
+    @keyframes ty-stars {
+      0%,40%  { opacity:0; }
+      50%     { opacity:1; }
+      60%,80% { opacity:0.7; }
+      70%,90% { opacity:1; }
+      100%    { opacity:0.6; }
+    }
+    @keyframes ty-text-in {
+      0%,55%  { opacity:0; transform: translateY(18px); }
+      70%,100%{ opacity:1; transform: translateY(0); }
+    }
+    @keyframes ty-hat-wobble {
+      0%,100%{ transform: rotate(0deg); }
+      20%    { transform: rotate(-6deg); }
+      50%    { transform: rotate(5deg); }
+      75%    { transform: rotate(-3deg); }
+    }
+
+    .ty-photo-wrap {
+      animation: ty-slide-in 1.1s cubic-bezier(.3,1.2,.4,1) 0.2s both;
+      transform-origin: bottom center;
+    }
+    .ty-bounce-idle {
+      animation: ty-bounce-idle 2.8s ease-in-out 1.4s infinite;
+      transform-origin: bottom center;
+    }
+    .ty-wave-arm {
+      animation: ty-wave 3s ease-in-out 1.3s infinite;
+      transform-origin: top left;
+      display: inline-block;
+    }
+    .ty-bubble {
+      animation: ty-bubble-pop 3s cubic-bezier(.4,1.5,.3,1) 0.2s both;
+      transform-origin: bottom left;
+    }
+    .ty-stars {
+      animation: ty-stars 2s ease-in-out 1.6s infinite;
+    }
+    .ty-text {
+      animation: ty-text-in 1.2s ease-out 1.1s both;
+    }
+    .ty-hat {
+      animation: ty-hat-wobble 2.2s ease-in-out 1.4s infinite;
+      transform-origin: bottom center;
+      display: inline-block;
+    }
+
+    /* cartoon outline on photo */
+    .ty-photo-frame {
+      position: relative;
+      width: 400px;
+      flex-shrink: 0;
+    }
+    .ty-photo-frame img {
+      width: 100%;
+      border-radius: 4px;
+      display: block;
+      filter: contrast(1.05) saturate(0.95);
+    }
+    /* hand-drawn border via SVG overlay */
+    .ty-photo-frame .ty-border {
+      position: absolute;
+      inset: -6px;
+      pointer-events: none;
+    }
+    .ty-photo-frame .ty-caption {
+      position: absolute;
+      bottom: -48px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--taupe);
+    }
+    /* speech bubble absolute above photo */
+    .ty-bubble-wrap {
+      position: absolute;
+      top: -130px;
+      right: -60px;
+      width: 280px;
+    }
+  </style>
+
+  <div class="frame">
+    <div class="row" style="justify-content:space-between;align-items:flex-start;">
+      <div class="meta">Course Proposal / Hochschule Anhalt</div>
+      <div class="meta">14 / 14</div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="row" style="align-items:flex-end;gap:100px;padding-left:80px;">
+
+      <!-- animated photo -->
+      <div class="ty-photo-wrap" style="flex-shrink:0;position:relative;">
+        <div class="ty-bounce-idle" style="position:relative;">
+          <div class="ty-photo-frame">
+            <!-- speech bubble -->
+            <div class="ty-bubble ty-bubble-wrap">
+              <svg viewBox="0 0 280 130" width="280" height="130">
+                <path d="M10 10 Q10 0 20 0 L260 0 Q270 0 270 10 L270 90 Q270 100 260 100 L80 100 L55 128 L60 100 L20 100 Q10 100 10 90 Z"
+                      fill="#FAF7F2" stroke="#1C1A17" stroke-width="3.5" stroke-linejoin="round"/>
+                <text x="140" y="48" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="52" font-style="italic" fill="#B8743A" font-weight="500">bye!</text>
+                <text x="140" y="82" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" fill="#8A7B6A" font-weight="400">see you in Dessau</text>
+              </svg>
+            </div>
+
+            <img src="bauhaus-graduation.jpg?v=1" alt="Joudi Tabbakh at Bauhaus Dessau graduation"/>
+
+            <!-- hand-drawn wobbly border -->
+            <svg class="ty-border" viewBox="0 0 412 600" preserveAspectRatio="none">
+              <rect x="2" y="2" width="408" height="596" fill="none"
+                    stroke="#B8743A" stroke-width="3.5"
+                    stroke-dasharray="6 4"
+                    rx="4"/>
+            </svg>
+
+            <!-- cartoon decorations (right side only, safe from overflow) -->
+            <svg class="ty-stars" style="position:absolute;top:-24px;right:8px;width:60px;height:60px;" viewBox="0 0 70 70">
+              <text x="8" y="44" font-size="32" fill="#B8743A">✦</text>
+              <text x="40" y="22" font-size="18" fill="#1C1A17">✦</text>
+            </svg>
+            <div style="position:absolute;top:28%;right:-30px;font-size:44px;line-height:1;" class="ty-wave-arm">👋</div>
+
+            <div style="position:absolute;bottom:-44px;left:0;right:0;text-align:center;font-family:var(--serif);font-style:italic;font-size:22px;color:var(--taupe);white-space:nowrap;">Bauhaus Dessau · Graduation 2020</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- text block -->
+      <div class="col ty-text" style="gap:36px;flex:1;padding-bottom:48px;">
+        <div class="eyebrow">
+          <span class="rule-short" style="background:var(--ochre);"></span>
+          <span class="meta" style="color:var(--ochre);">&nbsp;</span>
+        </div>
+        <h1 class="display" style="font-size:120px;">Thank you<br/>for your <em>time</em>.</h1>
+        <h3 class="subtitle" style="max-width:720px;">Questions, revisions, scheduling — all welcome.</h3>
+        <div style="height:16px;"></div>
+        <div class="rule" style="max-width:600px;"></div>
+        <div style="height:16px;"></div>
+        <div class="col" style="gap:10px;">
+          <div style="font-family:var(--serif);font-size:44px;color:var(--ink);font-weight:500;line-height:1;">Joudi Tabbakh</div>
+          <div class="small" style="font-size:22px;">Architect · Interior Architect · AI-driven design</div>
+          <div style="display:flex;gap:32px;align-items:center;margin-top:8px;">
+            <a href="http://jt-studio.de" style="font-family:var(--serif);font-size:34px;color:var(--ochre);font-style:italic;text-decoration:none;white-space:nowrap;">jt-studio.de</a>
+            <span class="small" style="font-size:20px;color:var(--taupe);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4822663c292a2a2923207f082f25292124662b2725">[email&#160;protected]</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+</section>
+
+</deck-stage>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
